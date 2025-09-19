@@ -1,19 +1,30 @@
+"""
+Module: renderer.py
+Description: Handles all rendering and drawing of the Minesweeper game UI, including board, info panel, and end/start screens.
+Author: John Tran
+Creation Date: September 16, 2025
+External Sources: N/A - Original Code
+"""
+
 import pygame
 
 class Renderer:
     """
-    Handles all rendering and drawing operations for the Minesweeper game.
-    
-    Manages the visual representation of the game board, UI elements,
-    and screen states (start screen, game screen, end screen).
+    Description: Handles all rendering and drawing operations for the Minesweeper game. Manages the visual representation of the game board, UI elements, and screen states (start screen, game screen, end screen).
+    Author: John Tran
+    Creation Date: September 16, 2025
+    External Sources: N/A - Original Code
     """
     
     def __init__(self, game):
         """
-        Initialize the Renderer with a reference to the main game.
-        
-        Inputs: game (MinesweeperGame) - Reference to the main game instance
-        Outputs: None (constructor)
+        Description: Initialize the renderer with a reference to the main game.
+        Args:
+            game (MinesweeperGame): Reference to the main game instance
+        Returns: None
+        Author: John Tran
+        Creation Date: September 16, 2025
+        External Sources: N/A - Original Code
         """
         self.game = game
     
@@ -72,10 +83,12 @@ class Renderer:
     
     def draw_info_panel(self):
         """
-        Draw the information panel showing game status and statistics.
-        
-        Inputs: None
-        Outputs: None
+        Description: Draw the information panel (mine count, flags, timer, etc.).
+        Args: None
+        Returns: None
+        Author: John Tran
+        Creation Date: September 16, 2025
+        External Sources: N/A - Original Code
         """
         if not self.game.game_state:
             return
@@ -84,8 +97,7 @@ class Renderer:
         pygame.draw.rect(self.game.screen, self.game.COLORS['background'], info_rect)
         
         # Game status
-        status_text = self.game.font.render(f"Status: {self.game.game_state.get_status_text()}", 
-                                         True, self.game.COLORS['text'])
+        status_text = self.game.font.render(f"Status: {self.game.game_state.get_status_text()}", True, self.game.COLORS['text'])
         self.game.screen.blit(status_text, (10, 10))
         
         # Remaining mines
@@ -109,10 +121,12 @@ class Renderer:
     
     def draw_row_labels(self):
         """
-        Draw row labels (1-10) on the left side of the grid.
-        
-        Inputs: None
-        Outputs: None
+        Description: Draw row labels (1-10) on the left side of the grid.
+        Args: None
+        Returns: None
+        Author: John Tran
+        Creation Date: September 16, 2025
+        External Sources: N/A - Original Code
         """
         for row in range(self.game.GRID_HEIGHT):
             label = str(row + 1)
@@ -124,10 +138,12 @@ class Renderer:
     
     def draw_end_screen(self):
         """
-        Draw the win/loss screen overlay with mine count adjustment.
-        
-        Inputs: None
-        Outputs: None
+        Description: Draw the end screen UI (win/loss).
+        Args: None
+        Returns: None
+        Author: John Tran
+        Creation Date: September 16, 2025
+        External Sources: N/A - Original Code
         """
         if not self.game.game_state:
             return
@@ -174,10 +190,12 @@ class Renderer:
     
     def draw_start_screen(self):
         """
-        Draw the start screen with instructions and mine count adjustment.
-        
-        Inputs: None
-        Outputs: None
+        Description: Draw the start screen UI.
+        Args: None
+        Returns: None
+        Author: John Tran
+        Creation Date: September 16, 2025
+        External Sources: N/A - Original Code
         """
         # Clear background
         self.game.screen.fill((64, 64, 64))  # Dark gray background
@@ -227,10 +245,12 @@ class Renderer:
     
     def draw_game(self):
         """
-        Draw the complete game interface.
-        
-        Inputs: None
-        Outputs: None
+        Description: Draw the complete game interface.
+        Args: None
+        Returns: None
+        Author: John Tran
+        Creation Date: September 16, 2025
+        External Sources: N/A - Original Code
         """
         if self.game.show_start_screen:
             self.draw_start_screen()
