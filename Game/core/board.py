@@ -206,27 +206,12 @@ class Board:
     
     def is_game_won(self):
         """
-        Check if the game has been won (all safe cells revealed AND all mines flagged).
-        
+        Check if the game has been won (all non-mine cells revealed).
         Inputs: None
         Outputs: bool - True if game is won, False otherwise
         """
-        # Original implementation - win condition check
-        # Must have revealed all safe cells AND flagged all mines
-        safe_cells_revealed = self.revealed_cells == self.total_safe_cells
-        
-        if not safe_cells_revealed:
-            return False
-        
-        # Check that all mines are flagged
-        mines_flagged = 0
-        for row in range(self.ROWS):
-            for col in range(self.COLS):
-                cell = self.grid[row][col]
-                if cell.is_mine and cell.is_flagged:
-                    mines_flagged += 1
-        
-        return mines_flagged == self.mine_count
+        # Win if all non-mine cells are revealed
+        return self.revealed_cells == self.total_safe_cells
     
     def reveal_all_mines(self):
         """
