@@ -1,3 +1,13 @@
+# ARCHITECTURE.md
+
+"""
+Module: ARCHITECTURE.md
+Description: System architecture overview documentation for the Minesweeper project.
+Author: Tuan Vu
+Creation Date: September 11, 2025
+External Sources: N/A - Original Code
+"""
+
 # System Architecture: Minesweeper
 
 ## 1. Overview
@@ -18,8 +28,6 @@ The system follows a **Model-View-Controller (MVC)** pattern:
 - **Model:** Core game logic and state management
 - **View:** Rendering engine for UI and game board
 - **Controller:** Input handling and event coordination
-
-This pattern was chosen for its clear separation of concerns, making the system maintainable and extensible.
 
 ```mermaid
 flowchart TD

@@ -1,17 +1,26 @@
+"""
+Module: cell.py
+Description: Represents a single cell in the Minesweeper grid, managing mine, flag, reveal state, and adjacent mine count.
+Author: Kevinh Nguyen
+Creation Date: September 14, 2025
+External Sources: N/A - Original Code
+"""
 class Cell:
     """
-    Represents a single cell in the Minesweeper grid.
-    
-    This class manages the state of an individual cell including whether it contains
-    a mine, is flagged, is revealed, and how many adjacent mines it has.
+    Description: Represents a single cell in the Minesweeper grid, managing mine, flag, reveal state, and adjacent mine count.
+    Author: Kevinh Nguyen
+    Creation Date: September 14, 2025
+    External Sources: N/A - Original Code
     """
     
     def __init__(self):
         """
-        Initialize a new cell with default values.
-        
-        Inputs: None
-        Outputs: None (constructor)
+        Description: Initialize a new cell with default values (no mine, not revealed, not flagged, 0 adjacent mines).
+        Args: None
+        Returns: None
+        Author: Kevinh Nguyen
+        Creation Date: September 14, 2025
+        External Sources: N/A - Original Code
         """
         # Original implementation - cell state tracking
         self.is_mine = False          # True if this cell contains a mine
@@ -21,20 +30,24 @@ class Cell:
     
     def set_mine(self):
         """
-        Mark this cell as containing a mine.
-        
-        Inputs: None
-        Outputs: None
+        Description: Mark this cell as containing a mine.
+        Args: None
+        Returns: None
+        Author: Kevinh Nguyen
+        Creation Date: September 14, 2025
+        External Sources: N/A - Original Code
         """
         # Original implementation
         self.is_mine = True
     
     def reveal(self):
         """
-        Reveal this cell (uncover it).
-        
-        Inputs: None
-        Outputs: bool - True if cell was successfully revealed, False if flagged
+        Description: Reveal this cell (uncover it). Cannot reveal if flagged.
+        Args: None
+        Returns: bool - True if cell was successfully revealed, False if flagged
+        Author: Kevinh Nguyen
+        Creation Date: September 14, 2025
+        External Sources: N/A - Original Code
         """
         # Original implementation - cannot reveal flagged cells
         if self.is_flagged:
@@ -44,10 +57,12 @@ class Cell:
     
     def toggle_flag(self):
         """
-        Toggle the flag state of this cell.
-        
-        Inputs: None
-        Outputs: bool - True if cell was successfully flagged/unflagged, False if already revealed
+        Description: Toggle the flag state of this cell. Cannot flag if already revealed.
+        Args: None
+        Returns: bool - True if cell was successfully flagged/unflagged, False if already revealed
+        Author: Kevinh Nguyen
+        Creation Date: September 14, 2025
+        External Sources: N/A - Original Code
         """
         # Original implementation - cannot flag revealed cells
         if self.is_revealed:
@@ -57,10 +72,13 @@ class Cell:
     
     def set_adjacent_mines(self, count):
         """
-        Set the number of adjacent mines for this cell.
-        
-        Inputs: count (int) - Number of adjacent mines (0-8)
-        Outputs: None
+        Description: Set the number of adjacent mines for this cell.
+        Args:
+            count (int): Number of adjacent mines (0-8)
+        Returns: None
+        Author: Kevinh Nguyen
+        Creation Date: September 14, 2025
+        External Sources: N/A - Original Code
         """
         # Original implementation with bounds checking
         if 0 <= count <= 8:
@@ -68,10 +86,12 @@ class Cell:
     
     def get_display_value(self):
         """
-        Get the display value for this cell based on its current state.
-        
-        Inputs: None
-        Outputs: str - Character to display for this cell
+        Description: Get the display value for this cell based on its current state (flag, mine, number, or covered).
+        Args: None
+        Returns: str - Character to display for this cell
+        Author: Kevinh Nguyen
+        Creation Date: September 14, 2025
+        External Sources: N/A - Original Code
         """
         # Original implementation - display logic based on cell state
         if not self.is_revealed:
@@ -89,10 +109,12 @@ class Cell:
     
     def __str__(self):
         """
-        String representation of the cell for debugging.
-        
-        Inputs: None
-        Outputs: str - String representation
+        Description: String representation of the cell for debugging.
+        Args: None
+        Returns: str - String representation
+        Author: Kevinh Nguyen
+        Creation Date: September 14, 2025
+        External Sources: N/A - Original Code
         """
         # Original implementation for debugging purposes
         state = []

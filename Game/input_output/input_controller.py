@@ -1,29 +1,42 @@
+"""
+Module: input_controller.py
+Description: Handles user input events and dispatches actions to the game logic (Board, GameState).
+Author: Raj Kaura
+Creation Date: September 18, 2025
+External Sources: N/A - Original Code
+"""
 import pygame
 import sys
 
 class InputController:
     """
-    Handles all input events for the Minesweeper game.
-    
-    Processes mouse clicks, keyboard input, and coordinates game state changes
-    based on user interactions.
+    Description: Handles all input events for the Minesweeper game. Processes mouse clicks, keyboard input, and coordinates game state changes based on user interactions.
+    Author: Raj Kaura
+    Creation Date: September 18, 2025
+    External Sources: N/A - Original Code
     """
     
     def __init__(self, game):
         """
-        Initialize the InputController with a reference to the main game.
-        
-        Inputs: game (MinesweeperGame) - Reference to the main game instance
-        Outputs: None (constructor)
+        Description: Initialize the InputController with a reference to the main game.
+        Args:
+            game (MinesweeperGame): Reference to the main game instance
+        Returns: None
+        Author: Raj Kaura
+        Creation Date: September 18, 2025
+        External Sources: N/A - Original Code
         """
         self.game = game
     
     def get_cell_from_mouse(self, mouse_pos):
         """
-        Convert mouse position to grid coordinates.
-        
-        Inputs: mouse_pos (tuple) - Mouse position (x, y)
-        Outputs: tuple - Grid coordinates (row, col) or None if outside grid
+        Description: Convert mouse position to grid coordinates.
+        Args:
+            mouse_pos (tuple): Mouse position (x, y)
+        Returns: tuple - Grid coordinates (row, col) or None if outside grid
+        Author: Raj Kaura
+        Creation Date: September 18, 2025
+        External Sources: N/A - Original Code
         """
         x, y = mouse_pos
         
@@ -41,12 +54,15 @@ class InputController:
     
     def handle_cell_click(self, row, col, is_right_click=False):
         """
-        Handle a click on a specific cell.
-        
-        Inputs: row (int) - Grid row (0-9)
-                col (int) - Grid column (0-9)
-                is_right_click (bool) - True for right-click (flag), False for left-click (reveal)
-        Outputs: None
+        Description: Handle a click on a specific cell (reveal or flag).
+        Args:
+            row (int): Grid row (0-9)
+            col (int): Grid column (0-9)
+            is_right_click (bool): True for right-click (flag), False for left-click (reveal)
+        Returns: None
+        Author: Raj Kaura
+        Creation Date: September 18, 2025
+        External Sources: N/A - Original Code
         """
         if not self.game.game_state.is_game_active():
             return
@@ -89,10 +105,12 @@ class InputController:
     
     def handle_events(self):
         """
-        Handle all Pygame events including mouse clicks and keyboard input.
-        
-        Inputs: None
-        Outputs: bool - True to continue game loop, False to quit
+        Description: Handle all Pygame events including mouse clicks and keyboard input.
+        Args: None
+        Returns: bool - True to continue game loop, False to quit
+        Author: Raj Kaura
+        Creation Date: September 18, 2025
+        External Sources: N/A - Original Code
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

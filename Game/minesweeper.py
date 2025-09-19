@@ -1,3 +1,12 @@
+
+"""
+Module: minesweeper.py
+Description: Main entry point and game loop for the Minesweeper application. Handles initialization, event loop, and coordination between core logic, input, and rendering.
+Author: Changwen Gong
+Creation Date: September 17, 2025
+External Sources: N/A - Original Code
+"""
+
 import pygame
 import sys
 from core.board import Board
@@ -7,37 +16,40 @@ from input_output.renderer import Renderer
 
 class MinesweeperGame:
     """
-    Main Minesweeper game class using Pygame for graphical interface.
-    
-    Handles user interface, input processing, and game loop coordination
-    between Board and GameState classes.
+    Description: Main Minesweeper game class using Pygame for graphical interface. Coordinates user interface, input processing, and game loop between Board and GameState classes.
+    Author: Changwen Gong
+    Creation Date: September 17, 2025
+    External Sources: N/A - Original Code
     """
     
     def __init__(self):
         """
-        Initialize the Minesweeper game with Pygame and default settings.
-        
-        Inputs: None
-        Outputs: None (constructor)
+        Description: Initialize the Minesweeper game with Pygame and default settings.
+        Args: None
+        Returns: None
+        Author: Changwen Gong
+        Creation Date: September 17, 2025
+        External Sources: N/A - Original Code
         """
-        # Original implementation - Pygame initialization
-        pygame.init()
+        # Initialize Pygame and set up game constants.
         
-        # Game constants
+        pygame.init()
+
+        # Set up game constants for grid and UI layout.
         self.CELL_SIZE = 40
         self.GRID_WIDTH = 10
         self.GRID_HEIGHT = 10
         self.INFO_HEIGHT = 80
-        
-        # Window dimensions
+
+        # Calculate window dimensions based on grid and info panel.
         self.WINDOW_WIDTH = self.GRID_WIDTH * self.CELL_SIZE
         self.WINDOW_HEIGHT = self.GRID_HEIGHT * self.CELL_SIZE + self.INFO_HEIGHT
-        
-        # Game state
+
+        # Track game state for start/end screens.
         self.show_end_screen = False
         self.show_start_screen = True
-        
-        # Colors (original color scheme)
+
+        # Define color scheme for UI elements and cells.
         self.COLORS = {
             'background': (192, 192, 192),
             'cell_covered': (160, 160, 160),
@@ -77,12 +89,15 @@ class MinesweeperGame:
     
     def _start_new_game(self):
         """
-        Start a new game by resetting board and game state.
-        
-        Inputs: None
-        Outputs: None
+        Description: Start a new game by resetting board and game state.
+        Args: None
+        Returns: None
+        Author: Changwen Gong
+        Creation Date: September 17, 2025
+        External Sources: N/A - Original Code
         """
-        # Original implementation - game initialization
+        # Reset board and game state for a new session.
+        
         self.board = Board(self.mine_count)
         self.game_state = GameState(self.mine_count)
         self.show_end_screen = False
@@ -90,12 +105,14 @@ class MinesweeperGame:
     
     def _update_game_statistics(self):
         """
-        Update game state with current board statistics.
-        
-        Inputs: None
-        Outputs: None
+        Description: Update game state with current board statistics (revealed cells, flags placed).
+        Args: None
+        Returns: None
+        Author: Changwen Gong
+        Creation Date: September 17, 2025
+        External Sources: N/A - Original Code
         """
-        # Original implementation - statistics update
+        # Update statistics in GameState from Board state.
         self.game_state.update_statistics(
             self.board.revealed_cells,
             self.board.get_flag_count()
@@ -103,23 +120,27 @@ class MinesweeperGame:
     
     def _handle_events(self):
         """
-        Handle all Pygame events by delegating to the InputController.
-        
-        Inputs: None
-        Outputs: bool - True to continue game loop, False to quit
+        Description: Handle all Pygame events by delegating to the InputController.
+        Args: None
+        Returns: bool - True to continue game loop, False to quit
+        Author: Changwen Gong
+        Creation Date: September 17, 2025
+        External Sources: N/A - Original Code
         """
+        # Delegate event handling to InputController.
         return self.input_controller.handle_events()
     
     def run(self):
         """
-        Main game loop - runs until player quits.
-        
-        Inputs: None
-        Outputs: None
+        Description: Main game loop - runs until player quits. Handles event processing, rendering, and frame rate control.
+        Args: None
+        Returns: None
+        Author: Changwen Gong
+        Creation Date: September 17, 2025
+        External Sources: N/A - Original Code
         """
-        # Original implementation - main game loop
+        # Print game instructions to console for user reference.
         running = True
-        
         print("Minesweeper Game Started!")
         print("Controls:")
         print("- Left click: Reveal cell")
@@ -129,28 +150,33 @@ class MinesweeperGame:
         print("- UP/DOWN arrows: Adjust mine count (10-20)")
         print("- +/- keys: Also adjust mine count")
         print("- ESC: Quit game")
-        
+
+        # Main event loop for game execution.
         while running:
-            # Handle events
+            # Handle events from user input and system.
             running = self._handle_events()
-            
-            # Draw game using renderer
+
+            # Draw game using renderer to update UI.
             self.renderer.draw_game()
-            
-            # Control frame rate
+
+            # Control frame rate for smooth gameplay.
             self.clock.tick(60)
+
+        # Clean up and exit Pygame when game ends.
         
         pygame.quit()
         sys.exit()
 
 def main():
     """
-    Main function to start the Minesweeper game.
-    
-    Inputs: None
-    Outputs: None
+    Description: Main function to start the Minesweeper game. Handles instantiation and error handling.
+    Args: None
+    Returns: None
+    Author: Changwen Gong
+    Creation Date: September 17, 2025
+    External Sources: N/A - Original Code
     """
-    # Original implementation - application entry point
+    # Entry point for launching the game application.
     try:
         game = MinesweeperGame()
         game.run()
@@ -160,4 +186,5 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
+    # Run the main function if this script is executed directly.
     main()
