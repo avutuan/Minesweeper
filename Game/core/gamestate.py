@@ -17,18 +17,17 @@ class GameState:
     def __init__(self, mine_count=10):
         """
         Initialize a new game state.
-        
         Inputs: mine_count (int) - Number of mines in the game (default 10)
         Outputs: None (constructor)
         """
         # Original implementation - game state tracking
         self.status = GameStatus.PLAYING
         self.mine_count = mine_count
-        
         # Game statistics
         self.cells_revealed = 0
         self.flags_placed = 0
         self.first_click_made = False
+        self.flags_left = mine_count  # Track remaining flags
     
     def start_game(self):
         """
