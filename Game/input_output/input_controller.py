@@ -52,13 +52,23 @@ class InputController:
             return
         
         if is_right_click:
-            # Right click toggles flag
-            if self.game.board.toggle_flag(row, col):
-                self.game._update_game_statistics()
-                # Check for victory after flagging
-                if self.game.board.is_game_won():
-                    self.game.game_state.end_game(won=True)
-                    self.game.show_end_screen = True
+            cell = self.game.board.grid[row][col]
+            if not cell.is_revealed:
+                if cell.is_flagged:
+                    # Unflagging always allowed
+                    if self.game.board.toggle_flag(row, col):
+                        self.game.game_state.flags_left += 1
+                        self.game._update_game_statistics()
+                else:
+                    # Only allow flagging if flags_left > 0
+                    if self.game.game_state.flags_left > 0:
+                        if self.game.board.toggle_flag(row, col):
+                            self.game.game_state.flags_left -= 1
+                            self.game._update_game_statistics()
+                            # Check for victory after flagging
+                            if self.game.board.is_game_won():
+                                self.game.game_state.end_game(won=True)
+                                self.game.show_end_screen = True
         else:
             # Left click reveals cell
             if not self.game.game_state.first_click_made:

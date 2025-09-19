@@ -165,17 +165,19 @@ class Board:
     
     def toggle_flag(self, row, col):
         """
-        Toggle the flag state of a cell.
-        
+        Toggle the flag state of a cell. Only allow flagging if not revealed. Unflagging always allowed.
         Inputs: row (int) - Row position (0-9)
                 col (int) - Column position (0-9)
         Outputs: bool - True if flag was toggled, False otherwise
         """
-        # Original implementation - flag toggling
         if not (0 <= row < self.ROWS and 0 <= col < self.COLS):
             return False
-        
-        return self.grid[row][col].toggle_flag()
+        cell = self.grid[row][col]
+        if cell.is_revealed:
+            return False
+        # Toggle flag
+        cell.is_flagged = not cell.is_flagged
+        return True
     
     def get_flag_count(self):
         """
