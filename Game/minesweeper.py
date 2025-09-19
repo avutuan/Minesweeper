@@ -1,9 +1,9 @@
 import pygame
 import sys
-from board import Board
-from gamestate import GameState, GameStatus
-from input_controller import InputController
-from renderer import Renderer
+from core.board import Board
+from core.gamestate import GameState
+from input_output.input_controller import InputController
+from input_output.renderer import Renderer
 
 class MinesweeperGame:
     """

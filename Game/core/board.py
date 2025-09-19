@@ -1,5 +1,5 @@
 import random
-from cell import Cell
+from core.cell import Cell
 
 class Board:
     """
