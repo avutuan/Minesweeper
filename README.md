@@ -19,13 +19,13 @@ pip install -r requirements.txt
 To run the game, you can use `python3/python` to do so:
 
 ```bash
-python3 src/minesweeper.py
+python3 Game/minesweeper.py
 ```
 
 or
 
 ```bash
-python src/minesweeper.py
+python Game/minesweeper.py
 ```
 
 NOTE: ensure you are in the root of the project
