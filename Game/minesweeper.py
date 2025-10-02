@@ -79,15 +79,17 @@ class MinesweeperGame:
         
         # Initialize game components
         self.mine_count = 10  # Default mine count
+        self.mode = "classic" # classic, easy, medium, hard
         self.board = None
         self.game_state = None
+        self.delayed_events = []
         
         # Initialize I/O controllers
         self.input_controller = InputController(self)
         self.renderer = Renderer(self)
         # Don't start game immediately - show start screen first
     
-    def _start_new_game(self):
+    def _start_new_game(self, mode):
         """
         Description: Start a new game by resetting board and game state.
         Args: None
@@ -99,7 +101,7 @@ class MinesweeperGame:
         # Reset board and game state for a new session.
         
         self.board = Board(self.mine_count)
-        self.game_state = GameState(self.mine_count)
+        self.game_state = GameState(self.mine_count, mode, self)
         self.show_end_screen = False
         self.show_start_screen = False
     
@@ -130,6 +132,18 @@ class MinesweeperGame:
         # Delegate event handling to InputController.
         return self.input_controller.handle_events()
     
+    def delay_event(self, delay, callback, update):
+        self.delayed_events.append({"time": 0, "delay": delay, "callback": callback, "update": update})
+    
+    def _update(self, delta_time):
+        for i in range(len(self.delayed_events)-1, -1, -1):
+            event = self.delayed_events[i]
+            event["time"] += delta_time
+            event["update"](event["time"])
+            if event["time"] > event["delay"]:
+                event["callback"]()
+                del self.delayed_events[i]
+    
     def run(self):
         """
         Description: Main game loop - runs until player quits. Handles event processing, rendering, and frame rate control.
@@ -145,7 +159,10 @@ class MinesweeperGame:
         print("Controls:")
         print("- Left click: Reveal cell")
         print("- Right click: Toggle flag")
-        print("- SPACE: Start new game")
+        print("- SPACE or 1 key: Start new game")
+        print("- 2 key: Start new game VS. AI (Easy)")
+        print("- 3 key: Start new game VS. AI (Medium)")
+        print("- 4 key: Start new game VS. AI (Hard)")
         print("- R key: Reset game (during play)")
         print("- UP/DOWN arrows: Adjust mine count (10-20)")
         print("- +/- keys: Also adjust mine count")
@@ -153,14 +170,17 @@ class MinesweeperGame:
 
         # Main event loop for game execution.
         while running:
+            # Control frame rate for smooth gameplay.
+            delta_time = self.clock.tick(60) / 1000.0
+            
+            # Update animations
+            self._update(delta_time)
+
             # Handle events from user input and system.
             running = self._handle_events()
 
             # Draw game using renderer to update UI.
             self.renderer.draw_game()
-
-            # Control frame rate for smooth gameplay.
-            self.clock.tick(60)
 
         # Clean up and exit Pygame when game ends.
         

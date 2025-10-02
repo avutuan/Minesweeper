@@ -100,6 +100,14 @@ class Renderer:
         status_text = self.game.font.render(f"Status: {self.game.game_state.get_status_text()}", True, self.game.COLORS['text'])
         self.game.screen.blit(status_text, (10, 10))
         
+        # Turn
+        current_player = self.game.game_state.current_player
+        if self.game.game_state.ai_thinking_timer > 0:
+            for _dot in range(int(self.game.game_state.ai_thinking_timer*4)):
+                current_player += "."
+        turn_text = self.game.font.render(f"Turn: {current_player}", True, self.game.COLORS['text'])
+        self.game.screen.blit(turn_text, (200, 35))
+        
         # Remaining mines
         mines_remaining = self.game.game_state.get_remaining_mines()
         mines_text = self.game.font.render(f"Mines: {mines_remaining}", 
@@ -212,7 +220,7 @@ class Renderer:
         
         # Mine count selection
         mine_text = pygame.font.Font(None, 36).render(f"Mines: {self.game.mine_count}", True, (255, 255, 0))
-        mine_rect = mine_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 180))
+        mine_rect = mine_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 160))
         self.game.screen.blit(mine_text, mine_rect)
         
         # Instructions
@@ -225,7 +233,10 @@ class Renderer:
             "",
             "CONTROLS:",
             "• UP/DOWN arrows: Adjust mine count",
-            "• SPACE: Start game",
+            "• SPACE or 1 key: Start game",
+            "• 2 key: Start game VS. AI (Easy)",
+            "• 3 key: Start game VS. AI (Medium)",
+            "• 4 key: Start game VS. AI (Hard) ",
             "• ESC: Quit"
         ]
         
@@ -240,7 +251,7 @@ class Renderer:
                 font = self.game.small_font
             
             inst_text = font.render(instruction, True, color)
-            inst_rect = inst_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 220 + i * 20))
+            inst_rect = inst_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 200 + i * 20))
             self.game.screen.blit(inst_text, inst_rect)
     
     def draw_game(self):

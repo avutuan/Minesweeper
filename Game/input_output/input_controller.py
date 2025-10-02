@@ -67,6 +67,9 @@ class InputController:
         if not self.game.game_state.is_game_active():
             return
         
+        if not self.game.game_state.current_player == "You":
+            return
+        
         if is_right_click:
             cell = self.game.board.grid[row][col]
             if not cell.is_revealed:
@@ -85,6 +88,7 @@ class InputController:
                             if self.game.board.is_game_won():
                                 self.game.game_state.end_game(won=True)
                                 self.game.show_end_screen = True
+                self.game.game_state.next_turn()
         else:
             # Left click reveals cell
             if not self.game.game_state.first_click_made:
@@ -102,6 +106,8 @@ class InputController:
                 # Victory condition
                 self.game.game_state.end_game(won=True)
                 self.game.show_end_screen = True
+            else:
+                self.game.game_state.next_turn()
     
     def handle_events(self):
         """
@@ -119,30 +125,42 @@ class InputController:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return False
-                elif event.key == pygame.K_SPACE:
+                elif event.key == pygame.K_SPACE or event.key == pygame.K_1:
                     if self.game.show_start_screen:
                         # Start game from start screen
-                        self.game._start_new_game()
+                        self.game._start_new_game("classic")
                     elif self.game.show_end_screen and self.game.game_state:
                         # Handle end screen space press
                         status = self.game.game_state.get_status_text()
                         if "Victory" in status:
                             # Win: start new game
-                            self.game._start_new_game()
+                            self.game._start_new_game("classic")
                         else:
                             # Loss: go to start screen
                             self.game.show_end_screen = False
                             self.game.show_start_screen = True
                     else:
                         # During gameplay: restart
-                        self.game._start_new_game()
+                        self.game._start_new_game("classic")
+                elif event.key == pygame.K_2:
+                    if self.game.show_start_screen:
+                        # VS AI
+                        self.game._start_new_game("easy")
+                elif event.key == pygame.K_3:
+                    if self.game.show_start_screen:
+                        # VS AI
+                        self.game._start_new_game("medium")
+                elif event.key == pygame.K_4:
+                    if self.game.show_start_screen:
+                        # VS AI
+                        self.game._start_new_game("hard")
                 elif event.key == pygame.K_r:
                     if self.game.show_end_screen and self.game.game_state and "Loss" in self.game.game_state.get_status_text():
                         # Retry with same settings after loss
-                        self.game._start_new_game()
+                        self.game._start_new_game("classic")
                     elif not self.game.show_end_screen and not self.game.show_start_screen:
                         # Reset during gameplay
-                        self.game._start_new_game()
+                        self.game._start_new_game("classic")
                 elif event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS or event.key == pygame.K_UP:
                     # Increase mine count (works in start screen or end screen for wins)
                     if (self.game.show_start_screen or 
