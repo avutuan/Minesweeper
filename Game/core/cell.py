@@ -13,7 +13,7 @@ class Cell:
     External Sources: N/A - Original Code
     """
     
-    def __init__(self):
+    def __init__(self, row, col):
         """
         Description: Initialize a new cell with default values (no mine, not revealed, not flagged, 0 adjacent mines).
         Args: None
@@ -27,6 +27,8 @@ class Cell:
         self.is_revealed = False      # True if this cell has been uncovered
         self.is_flagged = False       # True if this cell has been flagged by player
         self.adjacent_mines = 0       # Count of mines in adjacent cells (0-8)
+        self.row = row                # Row position in grid
+        self.col = col                # Column position in grid
     
     def set_mine(self):
         """

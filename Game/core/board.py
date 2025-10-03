@@ -33,7 +33,7 @@ class Board:
         self.first_click = True  # Track if this is the first click
         
         # Initialize 2D grid of Cell objects
-        self.grid = [[Cell() for _ in range(self.COLS)] for _ in range(self.ROWS)]
+        self.grid = [[Cell(row, col) for col in range(self.COLS)] for row in range(self.ROWS)]
         
         # Track game statistics
         self.revealed_cells = 0
@@ -298,3 +298,12 @@ class Board:
                 result += self.grid[row][col].get_display_value() + " "
             result += "\n"
         return result
+    
+    def get_covered_cells(self):
+        cells = []
+        for row in range(self.ROWS):
+            for col in range(self.COLS):
+                cell = self.grid[row][col]
+                if not cell.is_revealed and not cell.is_flagged:
+                    cells.append(cell)
+        return cells

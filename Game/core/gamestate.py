@@ -66,14 +66,20 @@ class GameState:
 
     def ai_move(self):
         if self.ai_mode == "easy":
-            row = random.randint(0, self.game.board.ROWS-1)
-            col = random.randint(0, self.game.board.COLS-1)
-
-            mine_hit = self.game.board.reveal_cell(row, col)
+            covered_cells = self.game.board.get_covered_cells()
+            cell = covered_cells[random.randint(0, len(covered_cells)-1)]
+            mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
         elif self.ai_mode == "medium":
-            pass
+            covered_cells = self.game.board.get_covered_cells()
+            cell = covered_cells[random.randint(0, len(covered_cells)-1)]
+            mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
         elif self.ai_mode == "hard":
-            pass
+            covered_cells = self.game.board.get_covered_cells()
+            while True:
+                cell = covered_cells[random.randint(0, len(covered_cells)-1)]
+                if not cell.is_mine or len(covered_cells) == 1:
+                    mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
+                    break
         self.ai_thinking_timer = 0
         self.next_turn()
 
