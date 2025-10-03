@@ -82,6 +82,8 @@ class InputController:
                     # Only allow flagging if flags_left > 0
                     if self.game.game_state.flags_left > 0:
                         if self.game.board.toggle_flag(row, col):
+                            if cell.is_flagged:
+                                self.game.play_flag_sound()
                             self.game.game_state.flags_left -= 1
                             self.game._update_game_statistics()
                             # Check for victory after flagging
@@ -91,13 +93,20 @@ class InputController:
                 self.game.game_state.next_turn()
         else:
             # Left click reveals cell
-            if not self.game.game_state.first_click_made:
+            cell = self.game.board.grid[row][col]
+            can_reveal = not cell.is_flagged and not cell.is_revealed
+
+            if can_reveal and not self.game.game_state.first_click_made:
                 self.game.game_state.mark_first_click()
+
+            if can_reveal:
+                self.game.play_normal_click_sound()
             
             mine_hit = self.game.board.reveal_cell(row, col)
             self.game._update_game_statistics()
             
             if mine_hit:
+                self.game.play_mine_hit_sound()
                 # Game over - reveal all mines
                 self.game.board.reveal_all_mines()
                 self.game.game_state.end_game(won=False)

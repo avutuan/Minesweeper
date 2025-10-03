@@ -70,6 +70,8 @@ class GameState:
             col = random.randint(0, self.game.board.COLS-1)
 
             mine_hit = self.game.board.reveal_cell(row, col)
+            if mine_hit and hasattr(self.game, "play_mine_hit_sound"):
+                self.game.play_mine_hit_sound()
         elif self.ai_mode == "medium":
             pass
         elif self.ai_mode == "hard":
