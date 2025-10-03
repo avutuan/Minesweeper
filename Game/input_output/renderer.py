@@ -107,13 +107,13 @@ class Renderer:
             for _dot in range(int(self.game.game_state.ai_thinking_timer*4)):
                 current_player += "."
         turn_text = self.game.font.render(f"Turn: {current_player}", True, self.game.COLORS['text'])
-        self.game.screen.blit(turn_text, (200, 35))
+        self.game.screen.blit(turn_text, (160, 35))
         
         # Remaining mines
         mines_remaining = self.game.game_state.get_remaining_mines()
         mines_text = self.game.font.render(f"Mines: {mines_remaining}", 
                                         True, self.game.COLORS['text'])
-        self.game.screen.blit(mines_text, (10, 35))
+        self.game.screen.blit(mines_text, (10, 30))
         
         # Instructions
         if not self.game.game_state.first_click_made:
@@ -126,13 +126,13 @@ class Renderer:
             True,
             self.game.COLORS['text']
         )
-        theme_rect = theme_text.get_rect(topright=(self.game.WINDOW_WIDTH - 10, 10))
+        theme_rect = theme_text.get_rect(topright=(self.game.WINDOW_WIDTH - 10, 30))
         self.game.screen.blit(theme_text, theme_rect)
 
         theme_hint = self.game.small_font.render(
             "Press T to cycle", True, self.game.COLORS['text']
         )
-        hint_rect = theme_hint.get_rect(topright=(self.game.WINDOW_WIDTH - 10, 30))
+        hint_rect = theme_hint.get_rect(topright=(self.game.WINDOW_WIDTH - 10, 48))
         self.game.screen.blit(theme_hint, hint_rect)
 
         # Column labels (A-J)
@@ -236,7 +236,7 @@ class Renderer:
             True,
             ui.get('start_title', self.game.COLORS['text'])
         )
-        title_rect = title_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 80))
+        title_rect = title_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 70))
         self.game.screen.blit(title_text, title_rect)
 
         # Subtitle
@@ -245,7 +245,7 @@ class Renderer:
             True,
             ui.get('start_subtitle', self.game.COLORS['text'])
         )
-        subtitle_rect = subtitle_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 120))
+        subtitle_rect = subtitle_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 100))
         self.game.screen.blit(subtitle_text, subtitle_rect)
 
         # Mine count selection
@@ -254,7 +254,7 @@ class Renderer:
             True,
             ui.get('accent', self.game.COLORS['text'])
         )
-        mine_rect = mine_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 160))
+        mine_rect = mine_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 130))
         self.game.screen.blit(mine_text, mine_rect)
 
         # Theme display
@@ -263,7 +263,7 @@ class Renderer:
             True,
             ui.get('start_header', self.game.COLORS['text'])
         )
-        theme_rect = theme_display.get_rect(center=(self.game.WINDOW_WIDTH // 2, 190))
+        theme_rect = theme_display.get_rect(center=(self.game.WINDOW_WIDTH // 2, 170))
         self.game.screen.blit(theme_display, theme_rect)
 
         if self.game.theme_description:
@@ -272,7 +272,7 @@ class Renderer:
                 True,
                 ui.get('start_text', self.game.COLORS['text'])
             )
-            desc_rect = desc_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 210))
+            desc_rect = desc_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 190))
             self.game.screen.blit(desc_text, desc_rect)
 
         # Instructions
@@ -282,7 +282,6 @@ class Renderer:
             "• Right click to flag suspected mines",
             "• Avoid clicking on mines!",
             "• Flag all mines to win",
-            "",
             "CONTROLS:",
             "• UP/DOWN arrows: Adjust mine count",
             "• SPACE or 1 key: Start game",
@@ -304,7 +303,7 @@ class Renderer:
                 font = self.game.small_font
             
             inst_text = font.render(instruction, True, color)
-            inst_rect = inst_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 240 + i * 20))
+            inst_rect = inst_text.get_rect(center=(self.game.WINDOW_WIDTH // 2, 220 + i * 20))
             self.game.screen.blit(inst_text, inst_rect)
     
     def draw_game(self):
