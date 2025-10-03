@@ -58,6 +58,14 @@ class GameState:
             self.players.append("AI")
 
     def next_turn(self):
+        """
+        Description: Switch between turns.
+        Args: None
+        Returns: None
+        Author: Alejandro Sandoval
+        Creation Date: October 2, 2025
+        External Sources: N/A - Original Code
+        """
         self.turn = (self.turn+1)%len(self.players)
         self.current_player = self.players[self.turn]
         if self.current_player == "AI":
@@ -65,21 +73,41 @@ class GameState:
             self.game.delay_event(delay, lambda: self.ai_move(), lambda time: self.ai_update(time, delay))
 
     def ai_move(self):
+        """
+        Description: AI logic for uncovering cells for the three difficulties
+        Args: None
+        Returns: None
+        Author: Alejandro Sandoval
+        Creation Date: October 3, 2025
+        External Sources: N/A - Original Code
+        """
         if self.ai_mode == "easy":
-            row = random.randint(0, self.game.board.ROWS-1)
-            col = random.randint(0, self.game.board.COLS-1)
-
-            mine_hit = self.game.board.reveal_cell(row, col)
-            if mine_hit and hasattr(self.game, "play_mine_hit_sound"):
-                self.game.play_mine_hit_sound()
+            covered_cells = self.game.board.get_covered_cells()
+            cell = covered_cells[random.randint(0, len(covered_cells)-1)]
+            mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
         elif self.ai_mode == "medium":
-            pass
+            covered_cells = self.game.board.get_covered_cells()
+            cell = covered_cells[random.randint(0, len(covered_cells)-1)]
+            mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
         elif self.ai_mode == "hard":
-            pass
+            covered_cells = self.game.board.get_covered_cells()
+            while True:
+                cell = covered_cells[random.randint(0, len(covered_cells)-1)]
+                if not cell.is_mine or len(covered_cells) == 1:
+                    mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
+                    break
         self.ai_thinking_timer = 0
         self.next_turn()
 
     def ai_update(self, time, delay):
+        """
+        Description: Update AI thinking animation during AI's turn
+        Args: None
+        Returns: None
+        Author: Alejandro Sandoval
+        Creation Date: October 2, 2025
+        External Sources: N/A - Original Code
+        """
         self.ai_thinking_timer = time/delay
     
     def start_game(self):
