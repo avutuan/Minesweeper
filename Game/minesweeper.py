@@ -44,7 +44,7 @@ def _prompt_for_youtube_selection():
     try:
         selection = input("Selection [0]: ").strip()
     except EOFError:
-        selection = ""
+        selection = "" 
 
     if selection == "2":
         return "YouTube Video", DEFAULT_STANDARD_URL
@@ -61,6 +61,7 @@ def _launch_browser_window(stop_event, message_queue, position, size, window_tit
     width, height = size
     pos_x, pos_y = position
 
+    # create the browser window
     browser_window = webview.create_window(
         window_title,
         url=url,
