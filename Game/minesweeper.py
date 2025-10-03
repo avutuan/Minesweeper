@@ -38,16 +38,19 @@ DEFAULT_STANDARD_URL = "https://youtu.be/XD3nq0eECz4"
 def _prompt_for_youtube_selection():
     """Prompt the user for which YouTube experience to launch."""
     print("Choose the YouTube content to display alongside Minesweeper:")
-    print("  1) YouTube Shorts (default)")
+    print("  0) None (default)")
+    print("  1) YouTube Shorts")
     print("  2) Standard YouTube video")
     try:
-        selection = input("Selection [1]: ").strip()
+        selection = input("Selection [0]: ").strip()
     except EOFError:
         selection = ""
 
     if selection == "2":
         return "YouTube Video", DEFAULT_STANDARD_URL
-    return "YouTube Shorts", DEFAULT_SHORTS_URL
+    elif selection == "1":
+        return "YouTube Shorts", DEFAULT_SHORTS_URL
+    return None, None
 
 
 def _launch_browser_window(stop_event, message_queue, position, size, window_title, url):
@@ -156,8 +159,8 @@ class MinesweeperGame:
         self.browser_queue = browser_queue
         self.browser_process = browser_process
         self.browser_stop_event = browser_stop_event
-        self.browser_window_title = browser_window_title or "YouTube"
-        self.browser_window_url = browser_window_url or DEFAULT_SHORTS_URL
+        self.browser_window_title = browser_window_title
+        self.browser_window_url = browser_window_url
 
         self.themes = THEMES
         self.theme_names = list(self.themes.keys())
@@ -317,7 +320,8 @@ class MinesweeperGame:
         description_suffix = f" - {self.theme_description}" if self.theme_description else ""
         print(f"Current theme: {self.current_theme_name}{description_suffix}")
         print("- Press T to cycle theme (hold Shift for previous)")
-        print(f"Web window: {self.browser_window_title} -> {self.browser_window_url}")
+        if (self.browser_window_url is not None):
+            print(f"Web window: {self.browser_window_title} -> {self.browser_window_url}")
 
         # Main event loop for game execution.
         while running:
@@ -407,11 +411,10 @@ def main():
         browser_queue = None
         browser_stop_event = None
 
-        if webview is None:
-            raise ImportError("pywebview is required to launch the browser window. Install it with 'pip install pywebview'.")
-
-        video_title, video_url = _prompt_for_youtube_selection()
-        print(f"Launching {video_title} window at {video_url}")
+        if webview is not None:
+            video_title, video_url = _prompt_for_youtube_selection()
+            if video_url is not None:
+                print(f"Launching {video_title} window at {video_url}")
 
         game_window_position = (50, 50)
         game = MinesweeperGame(
@@ -420,31 +423,32 @@ def main():
             browser_window_url=video_url,
         )
 
-        webview_width = max(480, game.WINDOW_WIDTH)
-        webview_height = game.WINDOW_HEIGHT
-        browser_position_x = game_window_position[0] + game.WINDOW_WIDTH + 20
-        browser_position_y = game_window_position[1]
+        if video_url is not None:
+            webview_width = max(480, game.WINDOW_WIDTH)
+            webview_height = game.WINDOW_HEIGHT
+            browser_position_x = game_window_position[0] + game.WINDOW_WIDTH + 20
+            browser_position_y = game_window_position[1]
 
-        browser_queue = multiprocessing.Queue()
-        browser_stop_event = multiprocessing.Event()
+            browser_queue = multiprocessing.Queue()
+            browser_stop_event = multiprocessing.Event()
 
-        browser_process = multiprocessing.Process(
-            target=_launch_browser_window,
-            args=(
-                browser_stop_event,
-                browser_queue,
-                (browser_position_x, browser_position_y),
-                (webview_width, webview_height),
-                video_title,
-                video_url,
-            ),
-            name="MinesweeperWebView",
-        )
-        browser_process.start()
+            browser_process = multiprocessing.Process(
+                target=_launch_browser_window,
+                args=(
+                    browser_stop_event,
+                    browser_queue,
+                    (browser_position_x, browser_position_y),
+                    (webview_width, webview_height),
+                    video_title,
+                    video_url,
+                ),
+                name="MinesweeperWebView",
+            )
+            browser_process.start()
 
-        game.browser_queue = browser_queue
-        game.browser_process = browser_process
-        game.browser_stop_event = browser_stop_event
+            game.browser_queue = browser_queue
+            game.browser_process = browser_process
+            game.browser_stop_event = browser_stop_event
 
         game.run()
     except Exception as e:
