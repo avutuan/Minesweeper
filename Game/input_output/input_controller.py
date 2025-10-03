@@ -182,6 +182,9 @@ class InputController:
                         (self.game.show_end_screen and self.game.game_state and "Victory" in self.game.game_state.get_status_text())):
                         if self.game.mine_count > 10:
                             self.game.mine_count -= 1
+                elif event.key == pygame.K_t:
+                    direction = -1 if event.mod & pygame.KMOD_SHIFT else 1
+                    self.game.cycle_theme(direction)
             
             elif event.type == pygame.MOUSEBUTTONDOWN and not self.game.show_end_screen and not self.game.show_start_screen:
                 cell_coords = self.get_cell_from_mouse(event.pos)

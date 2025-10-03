@@ -7,6 +7,7 @@ Creation Date: September 17, 2025
 External Sources: N/A - Original Code
 """
 
+import copy
 import multiprocessing
 import os
 import queue
@@ -18,6 +19,7 @@ from core.board import Board
 from core.gamestate import GameState
 from input_output.input_controller import InputController
 from input_output.renderer import Renderer
+from themes import THEMES
 
 try:
     import webview
@@ -135,27 +137,6 @@ class MinesweeperGame:
         self.show_end_screen = False
         self.show_start_screen = True
 
-        # Define color scheme for UI elements and cells.
-        self.COLORS = {
-            'background': (192, 192, 192),
-            'cell_covered': (160, 160, 160),
-            'cell_revealed': (224, 224, 224),
-            'cell_mine': (255, 0, 0),
-            'cell_flag': (255, 255, 0),
-            'border': (128, 128, 128),
-            'text': (0, 0, 0),
-            'number_colors': {
-                1: (0, 0, 255),
-                2: (0, 128, 0),
-                3: (255, 0, 0),
-                4: (0, 0, 128),
-                5: (128, 0, 0),
-                6: (0, 128, 128),
-                7: (0, 0, 0),
-                8: (128, 128, 128)
-            }
-        }
-        
         # Initialize Pygame components
         self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
         pygame.display.set_caption("Minesweeper - EECS 581 Project 1")
@@ -171,13 +152,23 @@ class MinesweeperGame:
         self.delayed_events = []
         
         # Initialize I/O controllers
-        self.input_controller = InputController(self)
-        self.renderer = Renderer(self)
         self.browser_queue = browser_queue
         self.browser_process = browser_process
         self.browser_stop_event = browser_stop_event
         self.browser_window_title = browser_window_title or "YouTube"
         self.browser_window_url = browser_window_url or DEFAULT_SHORTS_URL
+
+        self.themes = THEMES
+        self.theme_names = list(self.themes.keys())
+        self.current_theme_index = 0
+        self.current_theme_name = ""
+        self.theme_description = ""
+        self.theme_ui = {}
+        self.COLORS = {}
+        self.set_theme(self.theme_names[self.current_theme_index], announce=False)
+
+        self.input_controller = InputController(self)
+        self.renderer = Renderer(self)
 
         self._sound_load_warnings = set()
         self._sound_play_warnings = set()
@@ -202,6 +193,29 @@ class MinesweeperGame:
                 print(f"Unable to load {label} sound: {sound_error}")
                 self._sound_load_warnings.add(label)
             return None
+
+    def set_theme(self, theme_name, announce=True):
+        if theme_name not in self.themes:
+            print(f"Theme '{theme_name}' not found.")
+            return
+
+        theme = self.themes[theme_name]
+        self.COLORS = copy.deepcopy(theme.get("colors", {}))
+        self.theme_ui = copy.deepcopy(theme.get("ui", {}))
+        self.current_theme_name = theme_name
+        self.theme_description = theme.get("description", "")
+        self.current_theme_index = self.theme_names.index(theme_name)
+
+        if announce:
+            description = f" - {self.theme_description}" if self.theme_description else ""
+            print(f"Theme set to {theme_name}{description}")
+
+    def cycle_theme(self, direction=1):
+        if not self.theme_names:
+            return
+        self.current_theme_index = (self.current_theme_index + direction) % len(self.theme_names)
+        next_theme = self.theme_names[self.current_theme_index]
+        self.set_theme(next_theme)
 
     def _start_new_game(self, mode):
         """
@@ -281,6 +295,9 @@ class MinesweeperGame:
         print("- UP/DOWN arrows: Adjust mine count (10-20)")
         print("- +/- keys: Also adjust mine count")
         print("- ESC: Quit game")
+        description_suffix = f" - {self.theme_description}" if self.theme_description else ""
+        print(f"Current theme: {self.current_theme_name}{description_suffix}")
+        print("- Press T to cycle theme (hold Shift for previous)")
         print(f"Web window: {self.browser_window_title} -> {self.browser_window_url}")
 
         # Main event loop for game execution.
