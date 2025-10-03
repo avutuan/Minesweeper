@@ -72,6 +72,7 @@ def _launch_browser_window(stop_event, message_queue, position, size, window_tit
         resizable=True,
     )
 
+    # Callback when user closes browser window
     def on_closed():
         try:
             message_queue.put_nowait("closed")
@@ -79,9 +80,11 @@ def _launch_browser_window(stop_event, message_queue, position, size, window_tit
             pass
         stop_event.set()
 
+    # Register the close event if supported
     if hasattr(browser_window, "events") and hasattr(browser_window.events, "closed"):
         browser_window.events.closed += on_closed
-
+        
+    # Thread that monitors stop event and cleans up browser window
     def monitor_stop():
         stop_event.wait()
         if hasattr(webview, "destroy_window"):
@@ -90,6 +93,7 @@ def _launch_browser_window(stop_event, message_queue, position, size, window_tit
             except Exception:
                 pass
 
+    # run the browser loop
     webview.start(monitor_stop)
     try:
         message_queue.put_nowait("terminated")
