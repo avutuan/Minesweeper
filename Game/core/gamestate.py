@@ -85,6 +85,8 @@ class GameState:
             covered_cells = self.game.board.get_covered_cells()
             cell = covered_cells[random.randint(0, len(covered_cells)-1)]
             mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
+            if mine_hit and hasattr(self.game, "play_mine_hit_sound"):
+                self.game.play_mine_hit_sound()
         elif self.ai_mode == "medium":
             covered_cells = self.game.board.get_covered_cells()
             cell = covered_cells[random.randint(0, len(covered_cells)-1)]
