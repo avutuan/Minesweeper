@@ -21,6 +21,7 @@ from input_output.input_controller import InputController
 from input_output.renderer import Renderer
 from themes import THEMES
 
+# attempt to import optional webview integration for side-by-side YouTube window
 try:
     import webview
 except ImportError:  # pragma: no cover - handled at runtime
