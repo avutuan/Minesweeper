@@ -43,8 +43,9 @@ class Renderer:
         if not cell:
             return
         
-        # Calculate screen position
-        x = col * self.game.CELL_SIZE
+        # Calculate screen position (with offset for row labels)
+        row_label_offset = 40
+        x = col * self.game.CELL_SIZE + row_label_offset
         y = row * self.game.CELL_SIZE + self.game.INFO_HEIGHT
         rect = pygame.Rect(x, y, self.game.CELL_SIZE, self.game.CELL_SIZE)
         
@@ -136,10 +137,11 @@ class Renderer:
         self.game.screen.blit(theme_hint, hint_rect)
 
         # Column labels (A-J)
+        row_label_offset = 40
         for col in range(self.game.GRID_WIDTH):
             label = chr(ord('A') + col)
             label_text = self.game.small_font.render(label, True, self.game.COLORS['text'])
-            x = col * self.game.CELL_SIZE + self.game.CELL_SIZE // 2 - label_text.get_width() // 2
+            x = col * self.game.CELL_SIZE + self.game.CELL_SIZE // 2 - label_text.get_width() // 2 + row_label_offset
             self.game.screen.blit(label_text, (x, self.game.INFO_HEIGHT - 20))
     
     def draw_row_labels(self):
@@ -155,9 +157,9 @@ class Renderer:
             label = str(row + 1)
             label_text = self.game.small_font.render(label, True, self.game.COLORS['text'])
             y = row * self.game.CELL_SIZE + self.game.INFO_HEIGHT + self.game.CELL_SIZE // 2 - label_text.get_height() // 2
-            # Draw label to the left of the grid (requires expanding window width slightly)
-            # For now, we'll skip row labels to maintain the specified window size
-            pass
+            # Draw label on the left side of the grid, centered in the margin
+            x = 20 - label_text.get_width() // 2
+            self.game.screen.blit(label_text, (x, y))
     
     def draw_end_screen(self):
         """
@@ -322,6 +324,9 @@ class Renderer:
             
             # Draw information panel
             self.draw_info_panel()
+            
+            # Draw row labels
+            self.draw_row_labels()
             
             # Draw all cells
             for row in range(self.game.GRID_HEIGHT):

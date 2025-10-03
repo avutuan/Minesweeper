@@ -40,11 +40,14 @@ class InputController:
         """
         x, y = mouse_pos
         
-        # Check if click is within game grid area
-        if (0 <= x < self.game.WINDOW_WIDTH and 
+        # Account for row label offset
+        row_label_offset = 40
+        
+        # Check if click is within game grid area (after the row labels)
+        if (row_label_offset <= x < self.game.WINDOW_WIDTH and 
             self.game.INFO_HEIGHT <= y < self.game.WINDOW_HEIGHT):
             
-            col = x // self.game.CELL_SIZE
+            col = (x - row_label_offset) // self.game.CELL_SIZE
             row = (y - self.game.INFO_HEIGHT) // self.game.CELL_SIZE
             
             if 0 <= row < self.game.GRID_HEIGHT and 0 <= col < self.game.GRID_WIDTH:

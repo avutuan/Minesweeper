@@ -139,7 +139,7 @@ class MinesweeperGame:
         self.INFO_HEIGHT = 80
 
         # Calculate window dimensions based on grid and info panel.
-        self.WINDOW_WIDTH = self.GRID_WIDTH * self.CELL_SIZE
+        self.WINDOW_WIDTH = (self.GRID_WIDTH * self.CELL_SIZE) + 40
         self.WINDOW_HEIGHT = self.GRID_HEIGHT * self.CELL_SIZE + self.INFO_HEIGHT
 
         # Track game state for start/end screens.
