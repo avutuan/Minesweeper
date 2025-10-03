@@ -300,6 +300,14 @@ class Board:
         return result
     
     def get_covered_cells(self):
+        """
+        Description: Compile a list of all .
+        Args: None
+        Returns: list - List of cell objects
+        Author: Alejandro Sandoval
+        Creation Date: October 3, 2025
+        External Sources: N/A - Original Code
+        """
         cells = []
         for row in range(self.ROWS):
             for col in range(self.COLS):

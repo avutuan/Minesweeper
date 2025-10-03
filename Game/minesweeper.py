@@ -133,9 +133,27 @@ class MinesweeperGame:
         return self.input_controller.handle_events()
     
     def delay_event(self, delay, callback, update):
+        """
+        Description: Call a function on a delay
+        Args: delay - Time in seconds
+            callback - Function to call
+            update - Function to call while updating
+        Returns: None
+        Author: Alejandro Sandoval
+        Creation Date: October 2, 2025
+        External Sources: N/A - Original Code
+        """
         self.delayed_events.append({"time": 0, "delay": delay, "callback": callback, "update": update})
     
     def _update(self, delta_time):
+        """
+        Description: Update any animations or timed functions.
+        Args: delta_time - Time elapsed since last update
+        Returns: None
+        Author: Alejandro Sandoval
+        Creation Date: October 2, 2025
+        External Sources: N/A - Original Code
+        """
         for i in range(len(self.delayed_events)-1, -1, -1):
             event = self.delayed_events[i]
             event["time"] += delta_time
