@@ -301,7 +301,7 @@ class Board:
     
     def get_covered_cells(self):
         """
-        Description: Compile a list of all .
+        Description: Compile a list of all covered cells.
         Args: None
         Returns: list - List of cell objects
         Author: Alejandro Sandoval
@@ -313,5 +313,22 @@ class Board:
             for col in range(self.COLS):
                 cell = self.grid[row][col]
                 if not cell.is_revealed and not cell.is_flagged:
+                    cells.append(cell)
+        return cells
+    
+    def get_hidden_neighbors(self, center_row, center_col):
+        """
+        Description: Compile a list of all hidden cells around a cell.
+        Args: None
+        Returns: list - List of cell objects around cell
+        Author: Alejandro Sandoval
+        Creation Date: October 3, 2025
+        External Sources: N/A - Original Code
+        """
+        cells = []
+        for row in range(center_row-1, center_row+1):
+            for col in range(center_col-1, center_col+1):
+                cell = self.get_cell(row, col)
+                if cell is not None and not cell.is_revealed:
                     cells.append(cell)
         return cells

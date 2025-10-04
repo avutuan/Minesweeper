@@ -6,7 +6,7 @@ Creation Date: September 19, 2025
 External Sources: N/A - Original Code
 """
 from enum import Enum
-import random
+from core.ai import AI
 
 class GameStatus(Enum):
     """
@@ -51,11 +51,11 @@ class GameState:
         self.players = ["You"]
         self.current_player = self.players[self.turn]
 
-        self.ai_mode = "easy"
+        self.mode = mode or "easy"
         self.ai_thinking_timer = 0
         if mode == "easy" or mode == "medium" or mode == "hard":
-            self.ai_mode = mode
             self.players.append("AI")
+            self.ai = AI(mode, self.game.board, self.game)
 
     def next_turn(self):
         """
@@ -81,23 +81,13 @@ class GameState:
         Creation Date: October 3, 2025
         External Sources: N/A - Original Code
         """
-        if self.ai_mode == "easy":
-            covered_cells = self.game.board.get_covered_cells()
-            cell = covered_cells[random.randint(0, len(covered_cells)-1)]
-            mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
-            if mine_hit and hasattr(self.game, "play_mine_hit_sound"):
-                self.game.play_mine_hit_sound()
-        elif self.ai_mode == "medium":
-            covered_cells = self.game.board.get_covered_cells()
-            cell = covered_cells[random.randint(0, len(covered_cells)-1)]
-            mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
-        elif self.ai_mode == "hard":
-            covered_cells = self.game.board.get_covered_cells()
-            while True:
-                cell = covered_cells[random.randint(0, len(covered_cells)-1)]
-                if not cell.is_mine or len(covered_cells) == 1:
-                    mine_hit = self.game.board.reveal_cell(cell.row, cell.col)
-                    break
+        result = self.ai.move()
+        if result is not None:
+            if result == "won":
+                self.game.game_state.end_game(won=False)
+            else:
+                self.game.game_state.end_game(won=True)
+            self.game.show_end_screen = True
         self.ai_thinking_timer = 0
         self.next_turn()
 

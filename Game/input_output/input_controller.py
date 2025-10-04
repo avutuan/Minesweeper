@@ -93,7 +93,6 @@ class InputController:
                             if self.game.board.is_game_won():
                                 self.game.game_state.end_game(won=True)
                                 self.game.show_end_screen = True
-                self.game.game_state.next_turn()
         else:
             # Left click reveals cell
             cell = self.game.board.grid[row][col]
@@ -146,7 +145,7 @@ class InputController:
                         status = self.game.game_state.get_status_text()
                         if "Victory" in status:
                             # Win: start new game
-                            self.game._start_new_game("classic")
+                            self.game._start_new_game(self.game.game_state.mode)
                         else:
                             # Loss: go to start screen
                             self.game.show_end_screen = False
@@ -169,7 +168,7 @@ class InputController:
                 elif event.key == pygame.K_r:
                     if self.game.show_end_screen and self.game.game_state and "Loss" in self.game.game_state.get_status_text():
                         # Retry with same settings after loss
-                        self.game._start_new_game("classic")
+                        self.game._start_new_game(self.game.game_state.mode)
                     elif not self.game.show_end_screen and not self.game.show_start_screen:
                         # Reset during gameplay
                         self.game._start_new_game("classic")
