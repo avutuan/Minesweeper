@@ -1,3 +1,10 @@
+"""
+Module: ai.py
+Description: Implements AI logic for Minesweeper gameplay with multiple difficulty levels (easy, medium, hard).
+Author: Alejandro Sandoval
+Creation Date: October 3, 2025
+External Sources: N/A - Original Code
+"""
 import random
 
 class AI():
