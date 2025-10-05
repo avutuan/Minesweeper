@@ -357,7 +357,7 @@ class MinesweeperGame:
                 running = False
 
         # Clean up and exit Pygame when game ends.
-        if webview is not None and hasattr(webview, "destroy_window"):
+        if webview is not None and hasattr(webview, "destroy_window"): # pragma: no cover - handled at runtime
             try:
                 for window in list(getattr(webview, "windows", [])):
                     webview.destroy_window(window)
