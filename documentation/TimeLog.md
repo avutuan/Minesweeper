@@ -7,19 +7,19 @@ Document for time log entires and estimatants for Maintenance phase of Minesweep
 # Clock Log (Team session entries) 
 
 ## 2025-09-26
-Aiden: 10:30 - 2:30
+Aiden: 10:30 - 12:30
 Alejandro: 10:30 - 2:30
-Jorge: 10:30 - 1:30
-Liam: 10:30 - 1:30
-Pashia: 10:30 - 1:30
+Jorge: 10:30 - 11:30
+Liam: 10:30 - 12:30
+Pashia: 10:30 - 12:30
 Reem: 10:30 - 12:00
 
 
 ## 2025-10-03
 Aiden: 10:30 - 1:00
 Alejandro: 10:30 - 1:00
-Jorge: 10:30 - 1:00
-Liam: 10:30 - 2:00
+Jorge: 10:30 - 11:30
+Liam: 10:30 - 1:00
 Pashia: 10:30 - 2:00
 Reem: 10:30 - 12:00
 
@@ -28,7 +28,7 @@ Aiden: 10:30 - 2:00
 Alejandro: 10:30 - 2:00
 Jorge: 10:30 - 1:00
 Liam: 10:30 - 1:00
-Pashia: 10:30 - 2:00
+Pashia: 10:30 - 1:00
 Reem: 10:30 - 12:00
 
 
@@ -79,12 +79,12 @@ This section tracks the estimated vs actual time spent on implementing features 
 - **Variance**: +3.0 hours (60% over estimate)  
 - **Notes**: Pattern detection & indexing fixes
 
-### 6. AI Integration Modes (interactive / auto-solve)
-**Description**: Toggle human/AI turns; UI controls; status updates  
+### 6. AI Integration Modes
+**Description**: Human/AI turns
 - **Estimated Time**: 3.0 hours  
 - **Actual Time Spent**: 4.0 hours  
 - **Variance**: +1.0 hour (33% over estimate)  
-- **Notes**: Extra UI wiring and state sync
+- **Notes**: Extra UI wiring
 
 ---
 
@@ -95,7 +95,7 @@ This section tracks the estimated vs actual time spent on implementing features 
 - **Estimated Time**: 3.0 hours  
 - **Actual Time Spent**: 3.0 hours  
 - **Variance**: 0.0 hours (0% on estimate)  
-- **Notes**: Uses user-gesture to satisfy autoplay rules
+- **Notes**: Uses sound effects for certain game mechanics
 
 ### 8. Color Themes
 **Description**: Added color themes to game  
@@ -113,9 +113,19 @@ This section tracks the estimated vs actual time spent on implementing features 
 
 ---
 
----
-
 ## Summary Statistics
+
+**Total Estimated Time**: 33.0 hours
+**Total Actual Time Spent**: 42.0 hours
+**Overall Variance**: +9.0 hours (27% over estimate)
+
+### Key Insights:
+1. **Inherited-code debugging** Phase 1 audit & fixes and **AI Medium/Hard rules** drove most of the overrun.  
+2. **AI integration** Took longer than expected due to changing requirements for AI solver
+3. **Color themes** required extra polish to keep number contrast/readability strong across themes.  
+4. **Video overlay (pywebview)** landed slightly **under estimate** after solving focus/interaction quirks.  
+5. **Audio/SFX** matched estimates with adding in sound effects
+
 
 
 
