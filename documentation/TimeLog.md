@@ -1,6 +1,6 @@
 # Project Time Log and Estimates for Maintenance
 
-Document for time log entires and estimants for Maintenance phase of Minesweeper project. 
+Document for time log entires and estimates for Maintenance phase of Minesweeper project. 
 
 ---
 
