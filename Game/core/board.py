@@ -33,7 +33,7 @@ class Board:
         self.first_click = True  # Track if this is the first click
         
         # Initialize 2D grid of Cell objects
-        self.grid = [[Cell() for _ in range(self.COLS)] for _ in range(self.ROWS)]
+        self.grid = [[Cell(row, col) for col in range(self.COLS)] for row in range(self.ROWS)]
         
         # Track game statistics
         self.revealed_cells = 0
@@ -298,3 +298,37 @@ class Board:
                 result += self.grid[row][col].get_display_value() + " "
             result += "\n"
         return result
+    
+    def get_covered_cells(self):
+        """
+        Description: Compile a list of all covered cells.
+        Args: None
+        Returns: list - List of cell objects
+        Author: Alejandro Sandoval
+        Creation Date: October 3, 2025
+        External Sources: N/A - Original Code
+        """
+        cells = []
+        for row in range(self.ROWS):
+            for col in range(self.COLS):
+                cell = self.grid[row][col]
+                if not cell.is_revealed and not cell.is_flagged:
+                    cells.append(cell)
+        return cells
+    
+    def get_hidden_neighbors(self, center_row, center_col):
+        """
+        Description: Compile a list of all hidden cells around a cell.
+        Args: None
+        Returns: list - List of cell objects around cell
+        Author: Alejandro Sandoval
+        Creation Date: October 3, 2025
+        External Sources: N/A - Original Code
+        """
+        cells = []
+        for row in range(center_row-1, center_row+1):
+            for col in range(center_col-1, center_col+1):
+                cell = self.get_cell(row, col)
+                if cell is not None and not cell.is_revealed:
+                    cells.append(cell)
+        return cells
